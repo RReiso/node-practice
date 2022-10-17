@@ -13,22 +13,26 @@ import { readFile, writeFile } from "fs/promises";
 // template.toString()
 
 // you don't need async keyword when you use await in tope level  scope
-let template = await readFile(
-  new URL("template.html", import.meta.url),
-  "utf-8"
-);
-console.log("template", template); // string
 
-const data = {
-  title: "Learn Node.js",
-  body: "My HTML",
-};
+try {
+  let template = await readFile(
+    new URL("template.html", import.meta.url),
+    "utf-8"
+  );
+  console.log("template", template); // string
 
-for (const [key, value] of Object.entries(data)) {
-  template = template.replace(`{${key}}`, value);
+  const data = {
+    title: "Learn Node.js",
+    body: "My HTML",
+  };
+
+  for (const [key, value] of Object.entries(data)) {
+    template = template.replace(`{${key}}`, value);
+  }
+  console.log("template", template);
+  await writeFile(new URL("index.html", import.meta.url), template);
+} catch (error) {
+  console.log("err", "HI");
 }
-console.log("template", template);
 
 //write file back to disk
-
-await writeFile(new URL("index.html", import.meta.url), template);
